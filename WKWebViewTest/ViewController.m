@@ -77,6 +77,17 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"contentSize"]) {
+        // 方法一
+        UIScrollView *scrollView = (UIScrollView *)object;
+        CGFloat height = scrollView.contentSize.height;
+        self.webViewHeight = height;
+        self.webView.frame = CGRectMake(0, 0, self.view.frame.size.width, height);
+        self.scrollView.frame = CGRectMake(0, 0, self.view.frame.size.width, height);
+        self.scrollView.contentSize =CGSizeMake(self.view.frame.size.width, height);
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:3 inSection:0], nil] withRowAnimation:UITableViewRowAnimationNone];
+        
+        /*
+        // 方法二
         [_webView evaluateJavaScript:@"document.body.offsetHeight" completionHandler:^(id _Nullable result, NSError * _Nullable error) {
             CGFloat height = [result doubleValue] + 20;
             self.webViewHeight = height;
@@ -85,6 +96,7 @@
             self.scrollView.contentSize =CGSizeMake(self.view.frame.size.width, height);
             [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:[NSIndexPath indexPathForRow:3 inSection:0], nil] withRowAnimation:UITableViewRowAnimationNone];
         }];
+         */
     }
 }
 
